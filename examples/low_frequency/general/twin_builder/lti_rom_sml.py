@@ -35,15 +35,31 @@ NG_MODE = False  # Open AEDT UI when it is launched.
 
 training_data_folder = "LTI_training_data.zip"
 temp_folder = tempfile.TemporaryDirectory(suffix=".ansys")
-input_dir = downloads.download_twin_builder_data(training_data_folder, True, temp_folder.name)
+
+
+def resolve_download_path(downloaded_path: str, file_name: str) -> str:
+    """Return the actual downloaded file path, accounting for nested example-data folders."""
+
+    if os.path.exists(downloaded_path):
+        return downloaded_path
+    nested_path = os.path.join(temp_folder.name, "twin_builder", "pyaedt", "twin_builder", file_name)
+    if os.path.exists(nested_path):
+        return nested_path
+    return downloaded_path
+
+
+input_dir = resolve_download_path(
+    downloads.download_twin_builder_data(training_data_folder, True, temp_folder.name),
+    training_data_folder,
+)
 
 # Download data from example_data repository
-
-twin_builder_data_folder = os.path.join(temp_folder.name, "twin_builder")
+nested_path = os.path.join(temp_folder.name, "twin_builder", "pyaedt", "twin_builder")
+twin_builder_data_folder = nested_path if os.path.exists(nested_path) else os.path.join(temp_folder.name, "twin_builder")
 data_folder = os.path.join(twin_builder_data_folder, "LTI_training")
 
 # Unzip training data and parse ports names
-downloads.unzip(os.path.join(input_dir), data_folder)
+downloads.unzip(input_dir, data_folder)
 ports_names_file = "Input_PortNames.txt"
 
 
