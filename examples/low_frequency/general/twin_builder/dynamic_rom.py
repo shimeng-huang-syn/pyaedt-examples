@@ -184,11 +184,9 @@ tb.analyze_setup("TR", cores=NUM_CORES)
 input_excitation = "PULSE1.VAL"
 x = tb.post.get_solution_data(input_excitation, "TR", "Time")
 plt.plot(x.intrinsics["Time"], x.get_expression_data(input_excitation)[1])
-
 output_temperature = "ROM1.Temperature_history"
 x = tb.post.get_solution_data(output_temperature, "TR", "Time")
 plt.plot(x.intrinsics["Time"], x.get_expression_data(output_temperature)[1])
-
 plt.grid()
 plt.xlabel("Time")
 plt.ylabel("Temperature History Variation with Input Temperature Pulse")

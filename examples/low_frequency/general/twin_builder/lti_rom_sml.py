@@ -208,25 +208,19 @@ pin_names_str = ",".join(pin_names)
 rom_pins = pin_names_str.lower().split(",")
 fig, ax = plt.subplots(ncols=1, nrows=2, figsize=(18, 7))
 fig.subplots_adjust(hspace=0.5)
-
 for i in range(0, 2):
     variable = "ROM1." + rom_pins[i]
     x = tb.post.get_solution_data(variable, "TR", "Time")
     ax[0].plot([el for el in x.intrinsics["Time"]], x.get_expression_data(variable)[1], label=variable)
-
 ax[0].set_title("ROM inputs")
 ax[0].legend(loc="upper left")
-
 for i in range(2, 4):
     variable = "ROM1." + rom_pins[i]
     x = tb.post.get_solution_data(variable, "TR", "Time")
     ax[1].plot([el for el in x.intrinsics["Time"]], x.get_expression_data(variable)[1], label=variable)
-
 ax[1].set_title("ROM outputs")
 ax[1].legend(loc="upper left")
-
 # Show plot
-
 plt.show()
 
 # ## Release AEDT
